@@ -111,69 +111,83 @@
     </div>
   </div>
 
-  <script>
-    const funnyResponses = [
-      "Breck is scrolling. Please give him 10 seconds to respond or ask again.",
-      "Georgia football is playing. Be aware of random yelling in 10 seconds.",
-      "BreckGPT is currently thinking, but not very hard.",
-      "Response delayed. Breck got distracted by something completely unrelated.",
-      "Breck is available, but only mentally at about 43%.",
-      "System overload: Breck saw one notification and forgot everything.",
-      "BreckGPT has reviewed your message and chosen vibes over logic.",
-      "Please wait. Breck is probably laughing before answering.",
-      "Answer incoming. Unless Breck opened TikTok again.",
-      "BreckGPT cannot answer right now. He is busy acting like he knows ball.",
-      "Breck is typing... deleting... typing... deleting... staring at the wall...",
-      "Your message has been received and ignored with confidence.",
-      "Processing... Breck is trying to make this sound smarter than it is.",
-      "BreckGPT would love to help, but he is spiritually off duty.",
-      "Hold on. Breck is checking if this is his problem first."
-    ];
+<script>
+  let funnyResponses = [
+    "Breck is scrolling. Please give him 10 seconds to respond or ask again.",
+    "Georgia football is playing. Be aware of random yelling in 10 seconds.",
+    "BreckGPT is currently thinking, but not very hard.",
+    "Response delayed. Breck got distracted by something completely unrelated.",
+    "Breck is available, but only mentally at about 43%.",
+    "System overload: Breck saw one notification and forgot everything.",
+    "BreckGPT has reviewed your message and chosen vibes over logic.",
+    "Please wait. Breck is probably laughing before answering.",
+    "Answer incoming. Unless Breck opened TikTok again.",
+    "BreckGPT cannot answer right now. He is busy acting like he knows ball.",
+    "Breck is typing... deleting... typing... deleting... staring at the wall...",
+    "Your message has been received and ignored with confidence.",
+    "Processing... Breck is trying to make this sound smarter than it is.",
+    "BreckGPT would love to help, but he is spiritually off duty.",
+    "Hold on. Breck is checking if this is his problem first."
+  ];
 
-    function sendMessage() {
-      const input = document.getElementById("userInput");
-      const chatBox = document.getElementById("chatBox");
-      const userText = input.value.trim();
+  let unusedResponses = [...funnyResponses];
 
-      if (userText === "") return;
-
-      // Add user message
-      const userMessage = document.createElement("div");
-      userMessage.classList.add("message", "user");
-      userMessage.textContent = userText;
-      chatBox.appendChild(userMessage);
-
-      input.value = "";
-
-      // Fake typing delay
-      const botThinking = document.createElement("div");
-      botThinking.classList.add("message", "bot");
-      botThinking.textContent = "BreckGPT is cooking...";
-      chatBox.appendChild(botThinking);
-
-      chatBox.scrollTop = chatBox.scrollHeight;
-
-      setTimeout(() => {
-        botThinking.remove();
-
-        const botMessage = document.createElement("div");
-        botMessage.classList.add("message", "bot");
-
-        const randomResponse =
-          funnyResponses[Math.floor(Math.random() * funnyResponses.length)];
-
-        botMessage.textContent = randomResponse;
-        chatBox.appendChild(botMessage);
-
-        chatBox.scrollTop = chatBox.scrollHeight;
-      }, 1500);
+  function getUniqueResponse() {
+    if (unusedResponses.length === 0) {
+      // Reset once all have been used
+      unusedResponses = [...funnyResponses];
     }
 
-    document.getElementById("userInput").addEventListener("keypress", function(e) {
-      if (e.key === "Enter") {
-        sendMessage();
-      }
-    });
-  </script>
+    const index = Math.floor(Math.random() * unusedResponses.length);
+    const response = unusedResponses[index];
+
+    // Remove used response so it doesn't repeat
+    unusedResponses.splice(index, 1);
+
+    return response;
+  }
+
+  function sendMessage() {
+    const input = document.getElementById("userInput");
+    const chatBox = document.getElementById("chatBox");
+    const userText = input.value.trim();
+
+    if (userText === "") return;
+
+    // User message
+    const userMessage = document.createElement("div");
+    userMessage.classList.add("message", "user");
+    userMessage.textContent = userText;
+    chatBox.appendChild(userMessage);
+
+    input.value = "";
+
+    // Fake thinking
+    const botThinking = document.createElement("div");
+    botThinking.classList.add("message", "bot");
+    botThinking.textContent = "BreckGPT is cooking...";
+    chatBox.appendChild(botThinking);
+
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    setTimeout(() => {
+      botThinking.remove();
+
+      const botMessage = document.createElement("div");
+      botMessage.classList.add("message", "bot");
+
+      botMessage.textContent = getUniqueResponse();
+      chatBox.appendChild(botMessage);
+
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }, 1500);
+  }
+
+  document.getElementById("userInput").addEventListener("keypress", function(e) {
+    if (e.key === "Enter") {
+      sendMessage();
+    }
+  });
+</script>
 </body>
 </html>
