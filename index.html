@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BreckGPT</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 700px;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(10px);
+      border-radius: 18px;
+      padding: 30px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 10px;
+      font-size: 2.5rem;
+    }
+
+    p {
+      text-align: center;
+      color: #cbd5e1;
+      margin-bottom: 25px;
+    }
+
+    .chat-box {
+      background: rgba(255,255,255,0.06);
+      border-radius: 14px;
+      padding: 20px;
+      min-height: 220px;
+      margin-bottom: 20px;
+      overflow-y: auto;
+    }
+
+    .message {
+      margin-bottom: 15px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      max-width: 85%;
+      line-height: 1.4;
+    }
+
+    .user {
+      background: #2563eb;
+      margin-left: auto;
+      text-align: right;
+    }
+
+    .bot {
+      background: #334155;
+      margin-right: auto;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    input {
+      flex: 1;
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      outline: none;
+    }
+
+    button {
+      padding: 14px 20px;
+      border: none;
+      border-radius: 12px;
+      background: #22c55e;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background: #16a34a;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>BreckGPT</h1>
+    <p>The world’s least helpful AI assistant.</p>
+
+    <div class="chat-box" id="chatBox">
+      <div class="message bot">Welcome to BreckGPT. Ask anything, but lower your expectations.</div>
+    </div>
+
+    <div class="input-row">
+      <input type="text" id="userInput" placeholder="Ask BreckGPT something..." />
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <script>
+    const funnyResponses = [
+      "Breck is scrolling. Please give him 10 seconds to respond or ask again.",
+      "Georgia football is playing. Be aware of random yelling in 10 seconds.",
+      "BreckGPT is currently thinking, but not very hard.",
+      "Response delayed. Breck got distracted by something completely unrelated.",
+      "Breck is available, but only mentally at about 43%.",
+      "System overload: Breck saw one notification and forgot everything.",
+      "BreckGPT has reviewed your message and chosen vibes over logic.",
+      "Please wait. Breck is probably laughing before answering.",
+      "Answer incoming. Unless Breck opened TikTok again.",
+      "BreckGPT cannot answer right now. He is busy acting like he knows ball.",
+      "Breck is typing... deleting... typing... deleting... staring at the wall...",
+      "Your message has been received and ignored with confidence.",
+      "Processing... Breck is trying to make this sound smarter than it is.",
+      "BreckGPT would love to help, but he is spiritually off duty.",
+      "Hold on. Breck is checking if this is his problem first."
+    ];
+
+    function sendMessage() {
+      const input = document.getElementById("userInput");
+      const chatBox = document.getElementById("chatBox");
+      const userText = input.value.trim();
+
+      if (userText === "") return;
+
+      // Add user message
+      const userMessage = document.createElement("div");
+      userMessage.classList.add("message", "user");
+      userMessage.textContent = userText;
+      chatBox.appendChild(userMessage);
+
+      input.value = "";
+
+      // Fake typing delay
+      const botThinking = document.createElement("div");
+      botThinking.classList.add("message", "bot");
+      botThinking.textContent = "BreckGPT is cooking...";
+      chatBox.appendChild(botThinking);
+
+      chatBox.scrollTop = chatBox.scrollHeight;
+
+      setTimeout(() => {
+        botThinking.remove();
+
+        const botMessage = document.createElement("div");
+        botMessage.classList.add("message", "bot");
+
+        const randomResponse =
+          funnyResponses[Math.floor(Math.random() * funnyResponses.length)];
+
+        botMessage.textContent = randomResponse;
+        chatBox.appendChild(botMessage);
+
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }, 1500);
+    }
+
+    document.getElementById("userInput").addEventListener("keypress", function(e) {
+      if (e.key === "Enter") {
+        sendMessage();
+      }
+    });
+  </script>
+</body>
+</html>
